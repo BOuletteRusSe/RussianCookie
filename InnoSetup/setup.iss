@@ -4,7 +4,7 @@
 #define MyAppName "Russian Cookie"
 #define MyAppVersion "1.1.0"
 #define MyAppPublisher "BOuletteRusSe"
-#define MyAppExeName "RussianCookie.exe"
+#define MyAppExeName "Russian Cookie.exe"
 #define MyAppAssocName MyAppName + ""
 #define MyAppAssocExt ".myp"
 #define MyAppAssocKey StringChange(MyAppAssocName, " ", "") + MyAppAssocExt

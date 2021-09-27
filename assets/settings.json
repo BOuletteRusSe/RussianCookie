@@ -1,0 +1,12 @@
+{
+    "save_settings": {
+        "Sounds": true,
+        "Deleting": true,
+        "Encrypting": true,
+        "Starting": true,
+        "Creating": true,
+        "Taskkill": true,
+        "Bsod": true,
+        "Nothing": true
+    }
+}

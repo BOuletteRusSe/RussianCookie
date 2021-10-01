@@ -15,7 +15,7 @@ if ctypes.windll.shell32.IsUserAnAdmin():
 
     pos = 0
     pos2 = 0
-    d = {"scripts/shit.vbs": "Do not read below", "scripts/explode.vbs": "This is not a joke", "scripts/dick.vbs": "Heavy", "scripts/del.vbs": "Delete in comming...", "scripts/ahh.vbs": "LETS GOOO", "scripts/boom.vbs": "BOOM BOOM", "scripts/bsod.vbs": "HO YEAH BOY", "scripts/fatma.vbs": "Critical error in line 256; Threading", "scripts/windows.vbs": "Critical core error in line 3122; core.cpp"}
+    d = {"scripts\\shit.vbs": "Do not read below", "scripts\\explode.vbs": "This is not a joke", "scripts\\dick.vbs": "Heavy", "scripts\\del.vbs": "Delete in comming...", "scripts\\ahh.vbs": "LETS GOOO", "scripts\\boom.vbs": "BOOM BOOM", "scripts\\bsod.vbs": "HO YEAH BOY", "scripts\\fatma.vbs": "Critical error in line 256; Threading", "scripts\\windows.vbs": "Critical core error in line 3122; core.cpp"}
     tk = Tk()
     ww = tk.winfo_screenwidth()
     wh = tk.winfo_screenheight()
@@ -35,38 +35,38 @@ if ctypes.windll.shell32.IsUserAnAdmin():
 
     def TkRage():
         
-        os.startfile("scripts/del.vbs")
+        os.startfile("scripts\\del.vbs")
         while True:
             try:
-                autoit.win_move(d["scripts/del.vbs"], 350, 350)
+                autoit.win_move(d["scripts\\del.vbs"], 350, 350)
                 break
             except: continue
-        os.startfile("scripts/del.vbs")
+        os.startfile("scripts\\del.vbs")
         while True:
             try:
-                autoit.win_move(d["scripts/del.vbs"], 350, wh-350)
+                autoit.win_move(d["scripts\\del.vbs"], 350, wh-350)
                 break
             except: continue
-        os.startfile("scripts/del.vbs")
+        os.startfile("scripts\\del.vbs")
         while True:
             try:
-                autoit.win_move(d["scripts/del.vbs"], ww-350, 350)
+                autoit.win_move(d["scripts\\del.vbs"], ww-350, 350)
                 break
             except: continue
-        os.startfile("scripts/del.vbs")
+        os.startfile("scripts\\del.vbs")
         while True:
             try:
-                autoit.win_move(d["scripts/del.vbs"], ww-350, wh-350)
+                autoit.win_move(d["scripts\\del.vbs"], ww-350, wh-350)
                 break
             except: continue
 
     simpleaudio.WaveObject.from_wave_file("assets/BSOD.wav").play()
 
     time.sleep(1.75)
-    os.startfile("scripts/bsod.vbs")
+    os.startfile("scripts\\bsod.vbs")
     while True:
         try:
-            autoit.win_move(d["scripts/bsod.vbs"], round(ww/2), round(wh/2))
+            autoit.win_move(d["scripts\\bsod.vbs"], round(ww/2), round(wh/2))
             break
         except: continue
     time.sleep(9.5)
@@ -75,16 +75,16 @@ if ctypes.windll.shell32.IsUserAnAdmin():
     TkRage()
     time.sleep(3.8)
     KillAllWindows()
-    os.startfile("scripts/boom.vbs")
+    os.startfile("scripts\\boom.vbs")
     time.sleep(0.2)
-    os.startfile("scripts/boom.vbs")
+    os.startfile("scripts\\boom.vbs")
     time.sleep(3)
     KillAllWindows()
     for i in range(50):
-        os.startfile("scripts/explode.vbs")
+        os.startfile("scripts\\explode.vbs")
         while True:
             try:
-                autoit.win_move(d["scripts/explode.vbs"], pos, pos)
+                autoit.win_move(d["scripts\\explode.vbs"], pos, pos)
                 break
             except: continue
         pos += 25 
@@ -96,19 +96,19 @@ if ctypes.windll.shell32.IsUserAnAdmin():
         else:
             pos = round(ww/2-i)
             pos2 = round(wh/2+i)
-        os.startfile("scripts/windows.vbs")
+        os.startfile("scripts\\windows.vbs")
         while True:
             try:
-                autoit.win_move(d["scripts/windows.vbs"], pos, pos2)
+                autoit.win_move(d["scripts\\windows.vbs"], pos, pos2)
                 break
             except: continue
     KillAllWindows()
     for i in range(170):
         
-            os.startfile("scripts/fatma.vbs")
+            os.startfile("scripts\\fatma.vbs")
             while True:
                 try:
-                    autoit.win_move(d["scripts/fatma.vbs"], i, i)
+                    autoit.win_move(d["scripts\\fatma.vbs"], i, i)
                     break
                 except: continue
     KillAllWindows()

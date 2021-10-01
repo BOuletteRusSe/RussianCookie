@@ -223,7 +223,7 @@ if ctypes.windll.shell32.IsUserAnAdmin():
                 shot_audio.play()
                 window.after(100, lambda: gun_button.configure(image=gun))
             
-            if 0 <= rda <= 0.01 and save_settings["Bsod"].get(): pass # Bsod()
+            if 0 <= rda <= 0.01 and save_settings["Bsod"].get(): Bsod()
             elif 0.01 < rda <= 0.2 and save_settings["Nothing"].get():
                 text_action = "You haven't had anything ... So far!"
                 color = "#cfcfb8"

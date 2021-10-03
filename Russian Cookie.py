@@ -1,6 +1,7 @@
-import os, json
+from os import startfile
+from json import load
 
-with open("scripts/settings.json", "r") as j: settings = json.load(j)
+with open("scripts/settings.json", "r") as j: settings = load(j)
 
-if settings["first_start"]: os.startfile("warning.vbs")
-else: os.startfile("RussianCookie.exe")
+if settings["first_start"]: startfile("warning.vbs")
+else: startfile("RussianCookie.exe")

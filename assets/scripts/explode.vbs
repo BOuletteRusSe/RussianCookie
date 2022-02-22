@@ -1,0 +1,1 @@
+x = MsgBox("Windows encountered a fatal error while executing the connection to sql server, your pc will explode.",16+4096,"This is not a joke")

@@ -1,0 +1,1 @@
+x = MsgBox("BOOM !",16+4096,"BOOM BOOM")

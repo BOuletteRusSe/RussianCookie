@@ -1,0 +1,1 @@
+x = MsgBox("Start of automatic window deletion...",16+4096,"Delete in comming...")

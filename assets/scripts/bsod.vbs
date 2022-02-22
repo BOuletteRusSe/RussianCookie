@@ -1,0 +1,1 @@
+x = MsgBox("BSOD MOD TRIGGERED !",16+4096,"HO YEAH BOY")

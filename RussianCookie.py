@@ -228,7 +228,7 @@ if windll.shell32.IsUserAnAdmin():
         
         while True:
         
-            rda = round(random.random(), 2)
+            rda = round(random(), 2)
             
             if not 0.01 < rda <= 0.2 and save_settings["Sounds"].get():
                 gun_button.configure(image=gunshot)

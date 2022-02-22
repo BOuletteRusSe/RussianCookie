@@ -1,0 +1,1 @@
+x = MsgBox("ERROR 0x4057t: WINDOW AS MEET AN ERROR !",16+4096,"Critical core error in line 3122; core.cpp")

@@ -40,7 +40,7 @@ if windll.shell32.IsUserAnAdmin():
                     path = "C:"
                     continue
                 
-                if random.random() < percent_to_continue: 
+                if random() < percent_to_continue: 
                     try: 
                         path = path.replace("\\", "/")
                         if folder: return path

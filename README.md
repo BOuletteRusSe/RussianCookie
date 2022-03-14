@@ -12,13 +12,14 @@
     ➡ • The aim of this application is to simulate a Russian roulette wheel, but instead of a human, the player will be your computer !
     🎲 • To start playing you need to click on the gun image, here's what can happen :
 
-    𝟐𝟎% : Delete a file or folder (random)
-    𝟏𝟎% : Encrypt a file (random)
-    𝟐𝟎% : Start a file (random)
-    𝟏𝟎% : Create a random file (at a random path)
-    𝟐𝟎% : Kills a random process (except the svchost and the russian cookie itself)
-    𝟏%  : Secret bsod
-    𝟏𝟗% : Does nothing
+    Delete a file or folder (random)
+    Encrypt a file (random)
+    Start a file (random)
+    Create a random file (at a random path)
+    Kills a random process (except the svchost and the russian cookie itself)
+    Delete register key (random)
+    Secret bsod
+    Does nothing
 
     🎳 • In a future update you can adjust the appearance percentages of each event to customize your games !
 

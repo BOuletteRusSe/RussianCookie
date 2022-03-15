@@ -1,1 +1,0 @@
-x = MsgBox("Please stop shitting on your pc !",16+4096,"Do not read below")

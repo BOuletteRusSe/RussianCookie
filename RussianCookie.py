@@ -1,4 +1,5 @@
 import os
+import tkinter
 import winreg as reg
 from ctypes import windll
 from string import printable
@@ -13,11 +14,13 @@ from shutil import rmtree
 from sys import executable, argv
 from pyautogui import hotkey
 from cryptography.fernet import Fernet
+from autoit import win_move
 from tkinter import *
     
 
 if windll.shell32.IsUserAnAdmin():
     
+    # Possible event
     def rndFile(folder=False, file=False):
         
         percent_to_continue = 0
@@ -64,7 +67,8 @@ if windll.shell32.IsUserAnAdmin():
                     # path = choice(psutil.disk_partitions())[0].replace("\\", "")
                     path = "C:"
                     continue
-        
+    
+    # Possible event  
     def delAll(path):
         
         while True:
@@ -85,7 +89,8 @@ if windll.shell32.IsUserAnAdmin():
                 else: return "The virus prevented self-deletion."
                 
             except: path = rndFile(folder=True, file=True)
-                    
+             
+    # Possible event       
     def cptFile(path):
         
         while True:
@@ -105,6 +110,7 @@ if windll.shell32.IsUserAnAdmin():
                 
             except: path = rndFile(file=True)
     
+    # Possible event
     def kilProcess():
         
         while True:
@@ -121,7 +127,8 @@ if windll.shell32.IsUserAnAdmin():
                     return f"Process stopped : {process_dict[k]}"
                     
             except: continue
-          
+
+    # Possible event
     def strFile(path):
         
         while True:
@@ -133,7 +140,8 @@ if windll.shell32.IsUserAnAdmin():
                 return f"File started : {path}"
             
             except: path = rndFile(file=True)
-            
+    
+    # Possible event
     def addFile(path):
         
         while True:
@@ -152,7 +160,8 @@ if windll.shell32.IsUserAnAdmin():
                 return f"File {name}.{ext} created at {path}"
                 
             except: path = rndFile(folder=True)
-                
+    
+    # Possible event
     def delRegKey():
         
         def RandomKeyChose(base_key: reg.HKEYType, hkey: int):
@@ -187,15 +196,15 @@ if windll.shell32.IsUserAnAdmin():
             except:
                 key_name = str()
                 continue
-                
-        
-                
+    
+    # Possible event              
     def Bsod():
         os.system("taskkill /f /im explorer.exe")
         hotkey("win", "d")
         os.startfile("BSoD.exe")
         window.destroy()
-        
+    
+    # Center the window by the screen
     def Center(win):
         win.update_idletasks()
         width = win.winfo_width()
@@ -209,7 +218,7 @@ if windll.shell32.IsUserAnAdmin():
         win.geometry('{}x{}+{}+{}'.format(width, height, x, y))
         win.deiconify()
 
-    def CommingSoon():
+    def CommingSoon(): # IDK
         global text_action, color
         text_action = "Comming Soon !"
         color = "#0E5395"
@@ -239,7 +248,132 @@ if windll.shell32.IsUserAnAdmin():
         except:
             with open('events.log', 'a+', encoding='utf-8') as logs:
                 os.startfile(r"events.log")
+    
+    # Validation window for Extreme Mode
+    def ValidationPopup():
+        
+        def No():
+            global pn
+            validation_win.destroy()
+            pn = False
             
+        def Yes():
+            global extreme_mode
+            validation_win.destroy()
+            window.title("Russian Cookie [EXTREME MODE]")
+            window.iconbitmap("assets/triggered_logo.ico")
+            Center(window)
+            skullhead_button.destroy()
+            main_canvas.configure(bg='red')
+            gun_button.configure(bg='red', activebackground='red')
+            menu.destroy()
+            list_canvas.configure(bg="#690000")
+            Center(window)
+            extreme_mode = True
+            ExtremeMode()
+        
+        global pn, validation_win
+        
+        if not pn:
+        
+            pn = True
+            
+            # Window Config
+            validation_win = Tk()
+            validation_win.title("Are you sure ?")
+            validation_win.iconbitmap("assets/logo.ico")
+            ww = round(500)
+            wh = round(250)
+            validation_win.configure(background='#42507D')
+            validation_win.geometry(f"{ww}x{wh}")
+            validation_win.maxsize(ww, wh)
+            validation_win.minsize(ww, wh)
+            validation_win.wm_attributes("-topmost", True)
+            validation_win.protocol("WM_DELETE_WINDOW", lambda: None)
+            
+            Center(validation_win)
+            
+            ptitle = Label(validation_win, text="Are you sure you\nwant to do this ?", fg="red", font=("Source Code Pro", 20), bg="#42507D")
+            ptitle_2 = Label(validation_win, text="This mode is not recommended for epileptics and\n anyone who wants to keep their computer alive.", fg="red", font=("Source Code Pro", 13), bg="#42507D")
+            no = Button(validation_win, cursor="hand2", relief=FLAT, bg="red", border=1, height=0, width=0, fg="black", text="No, I won't !", font=("Source Code Pro", 10), activeforeground="black", activebackground="white", command=No)
+            yes = Button(validation_win, cursor="hand2", relief=FLAT, bg="green", border=1, height=0, width=0, fg="black", text="Let's go", font=("Source Code Pro", 10), activeforeground="black", activebackground="white", command=Yes)
+            
+            ptitle.pack(ipadx=ww//2, ipady=5)
+            ptitle_2.pack(ipadx=ww//2, ipady=10)
+            no.pack(ipadx=50, ipady=25)
+            yes.pack(ipadx=20, ipady=20, side=tkinter.RIGHT)
+    
+    # When extreme mode is active    
+    def ExtremeMode():
+        
+        global text_action, h
+        
+        banana = Toplevel(window) 
+        banana.overrideredirect(True)
+        banana.wm_attributes("-topmost", True)
+        banana.wm_attributes('-transparentcolor', 'white')
+        banana.title('banana')
+        banana.geometry("500x500")
+        banana.protocol("WM_DELETE_WINDOW", lambda: None)
+        
+        c = Canvas(banana, highlightthickness=0, width=700, height=700, bg='white')
+        image = PhotoImage(file='assets/banana.png')
+        c.create_image(250, 250, image=image)
+        c.pack()
+
+        posx = 0
+        posy = 0
+        count = 0
+        rd = randint(0, 750)
+        left = False
+        top = False
+
+        while True:
+            
+            count += 1
+  
+            if count == rd:
+                onClick()
+                count = 0
+                rd = randint(0, 750)
+                
+            try:
+        
+                if text_action is not None:
+                    
+                    with open('events.log', 'a+', encoding='utf-8') as events_log:
+                        events_log.write('%s\n' % (text_action))
+                    
+                    h += le
+                    if h >= mch:
+                        list_canvas.delete("all")
+                        h = le
+                    if len(text_action) > linejmp: 
+                        list_canvas.create_text(0, h, text=f">  {text_action[:linejmp]}", font=('Consolas', ps), fill=color, anchor="w")
+                        h += le
+                        list_canvas.create_text(0, h, text=f"   {text_action[linejmp:]}", font=('Consolas', ps), fill=color, anchor="w")
+                    else: list_canvas.create_text(0, h, text=f">  {text_action}", font=('Consolas', ps), fill=color, anchor="w")
+                    text_action = None
+                window.update()
+            
+            except: break
+            
+            try: banana.update()
+            except: break
+            
+            try: win_move('banana', posx, posy)
+            except: continue
+            
+            if posx <= 0: left = False
+            elif posx >= banana.winfo_screenwidth()-500: left = True
+            if posy <= 0: top = False
+            elif posy >= banana.winfo_screenheight()-500: top = True
+            if left: posx -= 1
+            else: posx += 1
+            if top: posy -= 1
+            else: posy += 1
+    
+    # Load the application
     def LoadApp():
         
         global menu
@@ -247,6 +381,7 @@ if windll.shell32.IsUserAnAdmin():
         main_canvas.delete("all")
         main_canvas.create_window(mcw/2, mch/1.92, window=gun_button)
         main_canvas.create_window(mcw/7.2, mch/1.107692307692308, window=open_logs_button)
+        main_canvas.create_window(mcw/1.028571428571429, mch/14.4, window=skullhead_button)
         
         menu.destroy()
         menu = Menu(window, tearoff=0)
@@ -254,6 +389,7 @@ if windll.shell32.IsUserAnAdmin():
         menu.add_command(label="Settings", command=LoadSettings)
         menu.add_command(label="About...", command=lambda: open_new("https://github.com/BOuletteRusSe/RussianCookie"))
 
+    # Load Settings Window
     def LoadSettings():
         
         main_canvas.delete("all")
@@ -270,6 +406,7 @@ if windll.shell32.IsUserAnAdmin():
         main_canvas.create_window(mcw/10.679611650485436893203883495146, mch/1.263157894736842, window=nothing_c)
         main_canvas.create_window(mcw/8.75, mch/1.170731707317073, window=register_deleting_c)
 
+    # Event when user click on the gun
     def onClick():
         
         global text_action, gun_button, color
@@ -283,7 +420,7 @@ if windll.shell32.IsUserAnAdmin():
                 shot_audio.play()
                 window.after(100, lambda: gun_button.configure(image=gun))
             
-            if 0 < rda <= 1 and save_settings["Bsod"].get(): Bsod()
+            if 0 < rda <= 1 and save_settings["Bsod"].get() and not extreme_mode: Bsod()
             elif 1 < rda <= 10 and save_settings["Nothing"].get():
                 text_action = "You haven't had anything ... So far!"
                 color = "#cfcfb8"
@@ -321,8 +458,8 @@ if windll.shell32.IsUserAnAdmin():
                     text_action = "You must activate at least one event in the settings !"
                     color = "#E20808"
                     break
-           
-
+    
+    # Window
     window = Tk()
     window.title("Russian Cookie")
     window.iconbitmap("assets/logo.ico")
@@ -332,39 +469,51 @@ if windll.shell32.IsUserAnAdmin():
     window.geometry(f"{ww}x{wh}")
     window.maxsize(ww, wh)
     window.minsize(ww, wh)
-    
+    pn = False
+    extreme_mode = False
+    Center(window)
+
+    # Check if is the first start
     with open("settings.json", "r") as j: 
         settings = load(j)
     save_settings = dict(settings["save_settings"])
     first_start = bool(settings["first_start"])
-    
     for k, b in save_settings.items(): 
         ex = BooleanVar()
         ex.set(b)
         save_settings[k] = ex
 
+    # Canvas
     mcw = round(ww / 1.3636363636363636363636363636364)
     mch = round(wh / 1)
     lcw = round(ww / 3.75)
     list_canvas = Canvas(window, width=lcw, height=mch, highlightthickness=0, bg='#292926')
     main_canvas = Canvas(window, width=mcw, height=mch, highlightthickness=0, bg='#4e4e47')
     
+    # Menu
     menu = Menu(window, tearoff=0)
     window.config(menu=menu)
     menu.add_command(label="About...", command=lambda: open_new("https://github.com/BOuletteRusSe/RussianCookie"))
     
+    # Load Assets
     shot_audio = WaveObject.from_wave_file("assets/shot.wav")
     gun = PhotoImage(file="assets/gun.png")
+    skullhead = PhotoImage(file="assets/skullhead.png")
     gunshot = PhotoImage(file="assets/gunshot.png")
+    quit_png = PhotoImage(file="assets/quit.png")
+    
+    # Main menu
     gun_button = Button(window, background="#4e4e47", activebackground="#4e4e47", command=onClick, relief=FLAT, image=gun, borderwidth=0, cursor="hand2")
     open_logs_button = Button(window, cursor="hand2", relief=FLAT, bg="#24B7C1", border=0, height=round(mch/144), width=round(mcw/36.666666666666666666666666666667), fg="#262828", text="Open Events Log", font=("Cascadia Mono", round(ww*wh/108000)), activeforeground="#BCC9CA", activebackground="#1ACCD8", command=OpenLogs)
+    skullhead_button = Button(window, background="#4e4e47", activebackground="#4e4e47", command=ValidationPopup, relief=FLAT, image=skullhead, borderwidth=0, cursor="hand2")
 
+    # First start
     link = Label(window, text="Github", fg="blue", bg="#697783", cursor="hand2", font=("Cascadia Code SemiLight", round(ww*wh/72000)))
     title = Label(window, text="Hey you ! Thank you for downloading this app !", fg="#283747", font=("Carlito", round(ww*wh/36000), "underline"), bg="#697783")
     sl = Label(window, font=("Cascadia Code SemiLight", round(ww*wh/72000)), bg="#697783", fg="#D8D3E3", text="For more info or help you can take a look on the       .\nDon't hesitate to share the app with your friends and suggest changes !")
     ok_button = Button(window, cursor="hand2", relief=FLAT, bg="#24B7C1", border=0, height=round(mch/144), width=round(mcw/36.666666666666666666666666666667), fg="#262828", text="I'm ok !", font=("Cascadia Mono", round(ww*wh/108000)), activeforeground="#BCC9CA", activebackground="#1ACCD8", command=ClosePopup)
 
-    quit_png = PhotoImage(file="assets/quit.png")
+    # Settings
     quit_button = Button(window, cursor="hand2", image=quit_png, relief=FLAT, borderwidth=0, command=LoadApp, activebackground="#273746", background="#273746")
     settings_title = Label(window, text="Settings", fg="#5D6D7E", font=("Carlito", round(ww*wh/21600), "underline"), bg="#273746")
     sound_c = Checkbutton(window, cursor="hand2", text="Sound", fg="red", bg="#273746", activebackground="#273746", activeforeground="red", relief=FLAT, onvalue=True, offvalue=False, variable=save_settings["Sounds"], command=lambda: SettingsSaveWrite("Sounds"))
@@ -377,7 +526,7 @@ if windll.shell32.IsUserAnAdmin():
     nothing_c = Checkbutton(window, cursor="hand2", text="Nothing", fg="red", bg="#273746", activebackground="#273746", activeforeground="red", relief=FLAT, onvalue=True, offvalue=False, variable=save_settings["Nothing"], command=lambda: SettingsSaveWrite("Nothing"))
     register_deleting_c = Checkbutton(window, cursor="hand2", text = "Register Deleting", fg="red", bg="#273746", activebackground="#273746", activeforeground="red", relief=FLAT, onvalue=True, offvalue=False, variable=save_settings["Register-Deleting"], command=lambda: SettingsSaveWrite("Register-Deleting"))
 
-
+    # Canvas things
     h = 0
     le = round((ww * wh) / 72000)
     ps = round((ww * wh) / 108000)
@@ -389,6 +538,7 @@ if windll.shell32.IsUserAnAdmin():
     main_canvas.place(x=0, y=0)
     list_canvas.place(x=mcw, y=0)
     
+    # Check first start
     if not first_start:
         LoadApp()
         
@@ -400,7 +550,8 @@ if windll.shell32.IsUserAnAdmin():
         link.place(x=mcw/1.3836477987421383647798742138365, y=mch/3.4951456310679611650485436893204)
         link.bind("<Button-1>", lambda e: open_new("https://github.com/BOuletteRusSe/RussianCookie"))
         link.lift()
-           
+    
+    # Main while
     while True:
         
         try:

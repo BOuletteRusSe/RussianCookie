@@ -21,7 +21,7 @@
     Secret bsod
     Does nothing
 
-    🎳 • In a future update you can adjust the appearance percentages of each event to customize your games !
+There are also a Extreme Mode, no spoilers, I let you test for yourself !
 
 
 Thank you to everyone who takes the time to download the app and I wish you all a good game!

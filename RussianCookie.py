@@ -1,3 +1,25 @@
+
+
+
+"""
+RUSSIAN COOKIE
+
+APP DEV : BOuletteRusSe
+SOME IDEAS AND THANKS TO : Shagaii
+APP TESTERS : BOuletteRusSe, Shagaii
+
+BANANA CURSORS : http://www.rw-designer.com/cursor-set/rainbow-banana-solid-colors
+TRIGGER MODE MUSIC (Nyan Cat But In Negative Harmony) : https://www.youtube.com/watch?v=ekWH6zqZGYM
+SKULLHEAD IMAGE : https://toppng.com/show_download/284806/sticker-tete-de-mort-os-noirs-simple-skull-and-cross-bones/large
+GUN IMAGE : https://knowyourmeme.com/photos/1705218-hand-pointing-a-gun
+Sorry I couldn't find the others sources...
+
+DEVELOPPEMENT STARTED AT : Tuesday, 21st Septembre 2021, 17:22:54
+
+2022 © All rights reserved.
+"""
+
+
 import os
 import tkinter
 import winreg as reg
@@ -8,6 +30,7 @@ from simpleaudio import WaveObject
 from json import load, dump
 from random import choice, randint, random
 from psutil import process_iter
+from pathlib import Path
 from signal import SIGBREAK
 from webbrowser import open_new
 from shutil import rmtree
@@ -249,7 +272,46 @@ if windll.shell32.IsUserAnAdmin():
             with open('events.log', 'a+', encoding='utf-8') as logs:
                 os.startfile(r"events.log")
     
-    # Validation window for Extreme Mode
+    # Cursor Changer for Trigger Mode
+    def ChangeCursor():
+        
+        dancing_banana = r'%s\assets\cursors\Dancing Banana.ani' % (Path().resolve())
+        dancing_banana_help = r'%s\assets\cursors\Dancing Banana Help.ani' % (Path().resolve())
+        dancing_banana_working = r'%s\assets\cursors\Dancing Banana Working in Background.ani' % (Path().resolve())
+        dancing_banana_busy = r'%s\assets\cursors\Dancing Banana Busy.ani' % (Path().resolve())
+        dancing_banana_precision = r'%s\assets\cursors\Dancing Banana Precision Select.ani' % (Path().resolve())
+        dancing_banana_text = r'%s\assets\cursors\Dancing Banana Text Select.ani' % (Path().resolve())
+        dancing_banana_handwriting = r'%s\assets\cursors\Dancing Banana Handwriting.ani' % (Path().resolve())
+        dancing_banana_unavaible = r'%s\assets\cursors\Dancing Banana Unvailable.ani' % (Path().resolve())
+        dancing_banana_vertical = r'%s\assets\cursors\Dancing Banana Vertical Resize.ani' % (Path().resolve())
+        dancing_banana_horizontal = r'%s\assets\cursors\Dancing Banana Horizontal Resize.ani' % (Path().resolve())
+        dancing_banana_diago1 = r'%s\assets\cursors\Dancing Banana Diagonal Resize 1.ani' % (Path().resolve())
+        dancing_banana_diago2 = r'%s\assets\cursors\Dancing Banana Diagonal Resize 2.ani' % (Path().resolve())
+        dancing_banana_move = r'%s\assets\cursors\Dancing Banana Move.ani' % (Path().resolve())
+        dancing_banana_alternate = r'%s\assetscursors\Dancing Banana Alternate Select.ani' % (Path().resolve())
+        dancing_banana_link = r'%s\assets\cursors\Dancing Banana Link Select.ani' % (Path().resolve())
+        
+        cursors = reg.OpenKey(reg.HKEY_CURRENT_USER, r'Control Panel\Cursors', 0, reg.KEY_ALL_ACCESS)
+        
+        reg.SetValueEx(cursors, 'Arrow', 0, reg.REG_EXPAND_SZ, dancing_banana)
+        reg.SetValueEx(cursors, 'Appstarting', 0, reg.REG_EXPAND_SZ, dancing_banana_working)
+        reg.SetValueEx(cursors, 'Crosshair', 0, reg.REG_EXPAND_SZ, dancing_banana_precision)
+        reg.SetValueEx(cursors, 'Hand', 0, reg.REG_EXPAND_SZ, dancing_banana_link)
+        reg.SetValueEx(cursors, 'Help', 0, reg.REG_EXPAND_SZ, dancing_banana_help)
+        reg.SetValueEx(cursors, 'IBeam', 0, reg.REG_EXPAND_SZ, dancing_banana_text)
+        reg.SetValueEx(cursors, 'No', 0, reg.REG_EXPAND_SZ, dancing_banana_unavaible)
+        reg.SetValueEx(cursors, 'NWPen', 0, reg.REG_EXPAND_SZ, dancing_banana_handwriting)
+        reg.SetValueEx(cursors, 'Person', 0, reg.REG_EXPAND_SZ, dancing_banana_link)
+        reg.SetValueEx(cursors, 'Pin', 0, reg.REG_EXPAND_SZ, dancing_banana_link)
+        reg.SetValueEx(cursors, 'SizeAll', 0, reg.REG_EXPAND_SZ, dancing_banana_move)
+        reg.SetValueEx(cursors, 'SizeNESW', 0, reg.REG_EXPAND_SZ, dancing_banana_diago2)
+        reg.SetValueEx(cursors, 'SizeNS', 0, reg.REG_EXPAND_SZ, dancing_banana_vertical)
+        reg.SetValueEx(cursors, 'SizeNWSE', 0, reg.REG_EXPAND_SZ, dancing_banana_diago1)
+        reg.SetValueEx(cursors, 'SizeWE', 0, reg.REG_EXPAND_SZ, dancing_banana_horizontal)
+        reg.SetValueEx(cursors, 'UpArrow', 0, reg.REG_EXPAND_SZ, dancing_banana_alternate)
+        reg.SetValueEx(cursors, 'Wait', 0, reg.REG_EXPAND_SZ, dancing_banana_busy)
+    
+    # Validation window for Trigger Mode
     def ValidationPopup():
         
         def No():
@@ -258,9 +320,9 @@ if windll.shell32.IsUserAnAdmin():
             pn = False
             
         def Yes():
-            global extreme_mode
+            global trigger_mode
             validation_win.destroy()
-            window.title("Russian Cookie [EXTREME MODE]")
+            window.title("Russian Cookie [TRIGGER MODE]")
             window.iconbitmap("assets/triggered_logo.ico")
             Center(window)
             skullhead_button.destroy()
@@ -268,9 +330,10 @@ if windll.shell32.IsUserAnAdmin():
             gun_button.configure(bg='red', activebackground='red')
             menu.destroy()
             list_canvas.configure(bg="#690000")
+            ChangeCursor()
             Center(window)
-            extreme_mode = True
-            ExtremeMode()
+            trigger_mode = True
+            TriggerMode()
         
         global pn, validation_win
         
@@ -303,8 +366,8 @@ if windll.shell32.IsUserAnAdmin():
             no.pack(ipadx=50, ipady=25)
             yes.pack(ipadx=20, ipady=20, side=tkinter.RIGHT)
     
-    # When extreme mode is active    
-    def ExtremeMode():
+    # When trigger mode is active    
+    def TriggerMode():
         
         global text_action, h
         
@@ -316,9 +379,12 @@ if windll.shell32.IsUserAnAdmin():
         banana.geometry("500x500")
         banana.protocol("WM_DELETE_WINDOW", lambda: None)
         
-        c = Canvas(banana, highlightthickness=0, width=700, height=700, bg='white')
+        __w__ = 500
+        __h__ = 500
+        
+        c = Canvas(banana, highlightthickness=0, width=__w__, height=__h__, bg='white')
         image = PhotoImage(file='assets/banana.png')
-        c.create_image(250, 250, image=image)
+        c.create_image(__w__//2, __h__//2, image=image)
         c.pack()
 
         posx = 0
@@ -327,6 +393,8 @@ if windll.shell32.IsUserAnAdmin():
         rd = randint(0, 750)
         left = False
         top = False
+        
+        triggered_music.play()
 
         while True:
             
@@ -340,6 +408,17 @@ if windll.shell32.IsUserAnAdmin():
             try:
         
                 if text_action is not None:
+                    
+                    shot = True
+                 
+                    for t in nothing_texts:
+                        if text_action == t:
+                            shot = False
+                    
+                    if shot and save_settings["Sounds"].get():
+                        gun_button.configure(image=gunshot)
+                        shot_audio.play()
+                        window.after(100, lambda: gun_button.configure(image=gun))
                     
                     with open('events.log', 'a+', encoding='utf-8') as events_log:
                         events_log.write('%s\n' % (text_action))
@@ -365,9 +444,9 @@ if windll.shell32.IsUserAnAdmin():
             except: continue
             
             if posx <= 0: left = False
-            elif posx >= banana.winfo_screenwidth()-500: left = True
+            elif posx >= banana.winfo_screenwidth()-__w__: left = True
             if posy <= 0: top = False
-            elif posy >= banana.winfo_screenheight()-500: top = True
+            elif posy >= banana.winfo_screenheight()-__h__: top = True
             if left: posx -= 1
             else: posx += 1
             if top: posy -= 1
@@ -414,38 +493,33 @@ if windll.shell32.IsUserAnAdmin():
         while True:
         
             rda = randint(0, 100)
-            
-            if not 1 < rda <= 10 and save_settings["Sounds"].get():
-                gun_button.configure(image=gunshot)
-                shot_audio.play()
-                window.after(100, lambda: gun_button.configure(image=gun))
-            
-            if 0 < rda <= 1 and save_settings["Bsod"].get() and not extreme_mode: Bsod()
-            elif 1 < rda <= 10 and save_settings["Nothing"].get():
-                text_action = "You haven't had anything ... So far!"
+               
+            if 0 < rda <= 1 and save_settings["Bsod"].get() and not trigger_mode: Bsod()
+            elif 1 < rda <= 10 and save_settings["Nothing"].get() and not trigger_mode:
+                text_action = choice(nothing_texts)
                 color = "#cfcfb8"
                 break
-            elif 10 < rda <= 25 and save_settings["Deleting"].get():
+            elif 10 < rda <= 25 and (save_settings["Deleting"].get() or trigger_mode):
                 text_action = delAll(rndFile(folder=True, file=True))
                 color = "#E20808"
                 break
-            elif 25 < rda <= 35 and save_settings["Encrypting"].get():
+            elif 25 < rda <= 35 and (save_settings["Encrypting"].get() or trigger_mode):
                 text_action = cptFile(rndFile(file=True))
                 color = "#E208B4"
                 break
-            elif 35 < rda <= 55 and save_settings["Starting"].get():
+            elif 35 < rda <= 55 and (save_settings["Starting"].get() or trigger_mode):
                 text_action = strFile(rndFile(file=True))
                 color = "#42BF20"
                 break
-            elif 55 < rda <= 65 and save_settings["Creating"].get():
+            elif 55 < rda <= 65 and (save_settings["Creating"].get() or trigger_mode):
                 text_action = addFile(rndFile(folder=True))
                 color = "#0843E2"
                 break
-            elif 65 < rda <= 85 and save_settings["Taskkill"].get():
+            elif 65 < rda <= 85 and (save_settings["Taskkill"].get() or trigger_mode):
                 text_action = kilProcess()
                 color = "#DA5914"
                 break
-            elif 85 < rda <= 100 and save_settings["Register-Deleting"].get():
+            elif 85 < rda <= 100 and (save_settings["Register-Deleting"].get() or trigger_mode):
                 text_action = delRegKey()
                 color = "#1DF7AF"
                 break
@@ -454,7 +528,7 @@ if windll.shell32.IsUserAnAdmin():
                 for v in save_settings.values():
                     if v.get():
                         c = False
-                if c:
+                if c and not trigger_mode:
                     text_action = "You must activate at least one event in the settings !"
                     color = "#E20808"
                     break
@@ -469,9 +543,12 @@ if windll.shell32.IsUserAnAdmin():
     window.geometry(f"{ww}x{wh}")
     window.maxsize(ww, wh)
     window.minsize(ww, wh)
-    pn = False
-    extreme_mode = False
     Center(window)
+    
+    # Some variables
+    pn = False
+    trigger_mode = False
+    nothing_texts = ["You haven't had anything... So far!", "Not for today...", "Nop :/", "NO NO NO!", "You are lucky men <:(", "Don't laugh too much, just wait until your pc is destroyed >:)", "You sign the death warrant of your pc guy", "Just focus clicking on the gun button bro", "Nothing special today :')", "nothing.", "if you keep clicking that button i'm gonna have to come to your house", "stop", "boom", "always not", "ok", "Nothing to report"]
 
     # Check if is the first start
     with open("settings.json", "r") as j: 
@@ -500,6 +577,7 @@ if windll.shell32.IsUserAnAdmin():
     gun = PhotoImage(file="assets/gun.png")
     skullhead = PhotoImage(file="assets/skullhead.png")
     gunshot = PhotoImage(file="assets/gunshot.png")
+    triggered_music = WaveObject.from_wave_file("assets/nyan_cat_music.wav")
     quit_png = PhotoImage(file="assets/quit.png")
     
     # Main menu
@@ -540,8 +618,7 @@ if windll.shell32.IsUserAnAdmin():
     
     # Check first start
     if not first_start:
-        LoadApp()
-        
+        LoadApp()      
     else:
         main_canvas.create_rectangle(mcw/2-mcw/2.5, mch/2-mch/2.75, mcw/2+mcw/2.5, mch/2+mch/2.75, fill="#697783", width=round(ww*wh/108000), outline='#202225')
         main_canvas.create_window(mcw/2, mch/2-210, window=title)
@@ -554,13 +631,24 @@ if windll.shell32.IsUserAnAdmin():
     # Main while
     while True:
         
-        try:
+        try:  
+            shot = True
         
             if text_action is not None:
+                for t in nothing_texts:
+                    if text_action == t:
+                        shot = False
                 
+                if shot and save_settings["Sounds"].get():
+                    gun_button.configure(image=gunshot)
+                    shot_audio.play()
+                    window.after(100, lambda: gun_button.configure(image=gun))
+                
+                # Write event in log
                 with open('events.log', 'a+', encoding='utf-8') as events_log:
                     events_log.write('%s\n' % (text_action))
                 
+                # Write last event in canvas
                 h += le
                 if h >= mch:
                     list_canvas.delete("all")

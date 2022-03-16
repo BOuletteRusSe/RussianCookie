@@ -1,4 +1,6 @@
 
+DOWNLOAD LAST VERSION AT THE RIGHT ----------------->
+
 🍪 • 𝐑𝐮𝐬𝐬𝐢𝐚𝐧 𝐂𝐨𝐨𝐤𝐢𝐞 :
 
     ➡ • I created this app for fun but you can use it on a virtual machine or just use it for fun with friends.
@@ -23,5 +25,18 @@
 
 There are also a Extreme Mode, no spoilers, I let you test for yourself !
 
-
 Thank you to everyone who takes the time to download the app and I wish you all a good game!
+
+APP DEV : BOuletteRusSe
+SOME IDEAS AND THANKS TO : Shagaii
+APP TESTERS : BOuletteRusSe, Shagaii
+
+BANANA CURSORS : http://www.rw-designer.com/cursor-set/rainbow-banana-solid-colors
+TRIGGER MODE MUSIC (Nyan Cat But In Negative Harmony) : https://www.youtube.com/watch?v=ekWH6zqZGYM
+SKULLHEAD IMAGE : https://toppng.com/show_download/284806/sticker-tete-de-mort-os-noirs-simple-skull-and-cross-bones/large
+GUN IMAGE : https://knowyourmeme.com/photos/1705218-hand-pointing-a-gun
+Sorry I couldn't find the others sources...
+
+DEVELOPPEMENT STARTED AT : Tuesday, 21st Septembre 2021, 17:22:54
+
+2022 © All rights reserved.

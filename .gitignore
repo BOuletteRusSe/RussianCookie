@@ -1,6 +1,5 @@
 dist
 InnoSetup
-RussianCookie [SAFE MODE].py
 sounds
 logo
 assets/assets/BSOD.wav
@@ -11,3 +10,5 @@ RussianCookie.spec
 website
 speed_converter.bat
 scripts
+RussianCookie*[SAFE*MODE].py
+Others*Versions

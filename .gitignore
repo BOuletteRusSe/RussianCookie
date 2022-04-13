@@ -10,5 +10,6 @@ RussianCookie.spec
 website
 speed_converter.bat
 scripts
-RussianCookie*[SAFE*MODE].py
+RussianCookie* SAFE*MODE.py
 Others*Versions
+__tests__

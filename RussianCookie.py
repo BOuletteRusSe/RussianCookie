@@ -330,6 +330,7 @@ if windll.shell32.IsUserAnAdmin():
             gun_button.configure(bg='red', activebackground='red')
             menu.destroy()
             list_canvas.configure(bg="#690000")
+            events_list.configure(bg="#690000")
             ChangeCursor()
             Center(window)
             trigger_mode = True
@@ -423,16 +424,11 @@ if windll.shell32.IsUserAnAdmin():
                     with open('events.log', 'a+', encoding='utf-8') as events_log:
                         events_log.write('%s\n' % (text_action))
                     
-                    h += le
-                    if h >= mch:
-                        list_canvas.delete("all")
-                        h = le
-                    if len(text_action) > linejmp: 
-                        list_canvas.create_text(0, h, text=f">  {text_action[:linejmp]}", font=('Consolas', ps), fill=color, anchor="w")
-                        h += le
-                        list_canvas.create_text(0, h, text=f"   {text_action[linejmp:]}", font=('Consolas', ps), fill=color, anchor="w")
-                    else: list_canvas.create_text(0, h, text=f">  {text_action}", font=('Consolas', ps), fill=color, anchor="w")
+                    events_list.see(tkinter.END)
+                    events_list.insert(tkinter.END, text_action)
+                    events_list.itemconfig("end", fg=color)
                     text_action = None
+                    
                 window.update()
             
             except: break
@@ -461,6 +457,12 @@ if windll.shell32.IsUserAnAdmin():
         main_canvas.create_window(mcw/2, mch/1.92, window=gun_button)
         main_canvas.create_window(mcw/7.2, mch/1.107692307692308, window=open_logs_button)
         main_canvas.create_window(mcw/1.028571428571429, mch/14.4, window=skullhead_button)
+        
+        list_canvas.create_window((lcw-(mcw*0.0138888888888889))//2, (mch-(mch*0.0347222222222222))//2, window=events_list)
+        scrollbar_y.pack(side=tkinter.RIGHT, fill=BOTH)
+        scrollbar_x.place(x=(ww*wh)*0.0010185185185185, y=mch-((ww*wh)*0.00001388888888888889), width=(ww*wh)*0.00035185185185185184)
+        scrollbar_y.config(command=events_list.yview)
+        scrollbar_x.config(command=events_list.xview)
         
         menu.destroy()
         menu = Menu(window, tearoff=0)
@@ -605,20 +607,23 @@ if windll.shell32.IsUserAnAdmin():
     register_deleting_c = Checkbutton(window, cursor="hand2", text = "Register Deleting", fg="red", bg="#273746", activebackground="#273746", activeforeground="red", relief=FLAT, onvalue=True, offvalue=False, variable=save_settings["Register-Deleting"], command=lambda: SettingsSaveWrite("Register-Deleting"))
 
     # Canvas things
-    h = 0
-    le = round((ww * wh) / 72000)
     ps = round((ww * wh) / 108000)
     linejmp = round((ww * wh) / 20000)
-    texts = []
     text_action = None
     color = "black"
+    
+    # Events List and scrollbar
+    scrollbar_y = tkinter.Scrollbar(window, bg="#4d4a56")
+    scrollbar_x = tkinter.Scrollbar(window, bg="#4d4a56", orient=tkinter.HORIZONTAL)
+    events_list = tkinter.Listbox(window, xscrollcommand=scrollbar_x.set, yscrollcommand=scrollbar_y.set, font=('Consolas', 0), relief=tkinter.FLAT, highlightthickness=0, height=int((ww*wh*0.000030555555555555554)), bg="#292926", width=int((ww*wh)*0.000037037037037037037))
 
     main_canvas.place(x=0, y=0)
     list_canvas.place(x=mcw, y=0)
     
     # Check first start
     if not first_start:
-        LoadApp()      
+        LoadApp()
+        
     else:
         main_canvas.create_rectangle(mcw/2-mcw/2.5, mch/2-mch/2.75, mcw/2+mcw/2.5, mch/2+mch/2.75, fill="#697783", width=round(ww*wh/108000), outline='#202225')
         main_canvas.create_window(mcw/2, mch/2-210, window=title)
@@ -627,11 +632,12 @@ if windll.shell32.IsUserAnAdmin():
         link.place(x=mcw/1.3836477987421383647798742138365, y=mch/3.4951456310679611650485436893204)
         link.bind("<Button-1>", lambda e: open_new("https://github.com/BOuletteRusSe/RussianCookie"))
         link.lift()
-    
+
     # Main while
     while True:
         
-        try:  
+        try:
+        
             shot = True
         
             if text_action is not None:
@@ -648,17 +654,12 @@ if windll.shell32.IsUserAnAdmin():
                 with open('events.log', 'a+', encoding='utf-8') as events_log:
                     events_log.write('%s\n' % (text_action))
                 
-                # Write last event in canvas
-                h += le
-                if h >= mch:
-                    list_canvas.delete("all")
-                    h = le
-                if len(text_action) > linejmp: 
-                    list_canvas.create_text(0, h, text=f">  {text_action[:linejmp]}", font=('Consolas', ps), fill=color, anchor="w")
-                    h += le
-                    list_canvas.create_text(0, h, text=f"   {text_action[linejmp:]}", font=('Consolas', ps), fill=color, anchor="w")
-                else: list_canvas.create_text(0, h, text=f">  {text_action}", font=('Consolas', ps), fill=color, anchor="w")
+                # Write last event in list
+                events_list.see(tkinter.END)
+                events_list.insert(tkinter.END, text_action)
+                events_list.itemconfig("end", fg=color)
                 text_action = None
+            
             window.update()
             
         except: break

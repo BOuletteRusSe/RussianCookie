@@ -7,7 +7,7 @@ DOWNLOAD LAST VERSION AT THE RIGHT ----------------->
 
     ❗ • I'm in no way responsible for anything you can do using this program, I leave the source code available for the more curious (python).
 
-    ❓ • For any request, bug report or other you can add me on discord and let me know : ! .𝘆𝘆𝘂𝗞𝗶 # 𝟮𝟯𝟱𝟮
+    ❓ • For any request, bug report or other you can contat me at : enz0lanterne@outlook.fr
 
 🖱 • 𝐇𝐨𝐰 𝐢𝐭 𝐰𝐨𝐫𝐤𝐬 ? :
 
